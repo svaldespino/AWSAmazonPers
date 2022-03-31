@@ -1,0 +1,17 @@
+import boto3
+import json
+
+personalizeRt = boto3.client('personalize-runtime')
+
+def lambda_handler(event, context):
+
+	response = personalizeRt.get_recommendations(
+		campaignArn = 'arn:aws:personalize:us-east-2:952825003552:campaign/campaing_kiwi3',
+	userId = str('user_id'),
+    numResults = 15
+		)
+	print("Recommended items")
+	for item in response['itemList']:
+		print (item['itemId'])
+	return {
+    'statusCode': 200,'body': json.dumps(response['itemList'])}
